@@ -44,7 +44,9 @@ def generate(file_url):
 
 
 def gen(file_url):
-    check_input_image(file_url)
-    preprocess(file_url, foreground_ratio=0.5)
-    obj_path = generate(file_url)
-    return obj_path
+    is_valid = not (check_input_image(file_url))
+    if is_valid:
+      without_bg = preprocess(file_url, foreground_ratio=0.5)
+      obj_path = generate(without_bg)
+      return obj_path
+    return None

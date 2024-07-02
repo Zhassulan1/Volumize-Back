@@ -77,15 +77,11 @@ def upload_image(request):
         obj_path = gen(image_url)
         # obj_path = preprocess(image_url, foreground_ratio=0.5)
 
-        # print()
-        # print("Path to object in local", obj_path)
-
-        obj_key = generate_key('user', "obj", os.path.basename(obj_path))
-        obj_url = s3_upload_file(obj_path, obj_key)
+        if obj_path:
+            obj_key = generate_key('user', "obj", os.path.basename(obj_path))
+            obj_url = s3_upload_file(obj_path, obj_key)
         
-        # print()
-        # print("Path to object in s3", obj_url)
+            return JsonResponse({'obj_url': obj_url})
         
-        return JsonResponse({'obj_url': obj_url})
-    
+        return JsonResponse({'error': 'No file uploaded'}, status=400)
     return JsonResponse({'error': 'No file uploaded'}, status=400)
