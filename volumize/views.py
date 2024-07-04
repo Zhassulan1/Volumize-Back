@@ -75,7 +75,6 @@ def upload_image(request):
         image_url = s3_upload_obj(image, image_key)
 
         obj_path = gen(image_url)
-        # obj_path = preprocess(image_url, foreground_ratio=0.5)
 
         if obj_path:
             obj_key = generate_key('user', "obj", os.path.basename(obj_path))
@@ -128,9 +127,6 @@ def make_3d(request):
     print(f"Image URL: {image_url}")
 
     if request.method == 'POST' and image_url:
-        # if not check_input_image(image_url) == ():
-        #     return JsonResponse({'error': 'Invalid image on imput check'}, status=400)
-
         model_path = generate(image_url)
         if model_path:
             model_key = generate_key('user', "obj", os.path.basename(model_path))
