@@ -29,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^^j*^+2+&j6xs)#o9uq*!hmz(8qih_i%-o%a!0j1*9k)28=u14'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['13.49.145.207']
 
 
 # Application definition
@@ -46,15 +46,6 @@ INSTALLED_APPS = [
 
     'corsheaders',
 ]
-# !
-ASGI_APPLICATION = 'myproject.asgi.application'
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    },
-}
-# !
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
