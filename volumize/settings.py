@@ -45,8 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',
-    'channels',
-    'myapp',
 ]
 # !
 ASGI_APPLICATION = 'myproject.asgi.application'
