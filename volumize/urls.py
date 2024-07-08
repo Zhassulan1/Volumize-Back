@@ -21,7 +21,7 @@ from volumize.views import healthcheck, process, make_3d
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('healthcheck', healthcheck),
+    path('healthcheck/', healthcheck),
     path('process', process),
     path('make_3d', make_3d),
     # path('upload', upload_image), # legacy
