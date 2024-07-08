@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from volumize.views import healthcheck, upload_image, process, make_3d
+from volumize.views import healthcheck, process, make_3d
 
 urlpatterns = [
     path('admin/', admin.site.urls),
