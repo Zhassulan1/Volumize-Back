@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from volumize.generate_mesh import check_input_image, gen, preprocess, generate
 
-from s3 import upload_bytes, upload_file, generate_key
+from volumize.s3 import upload_bytes, upload_file, generate_key
 
 
 # @csrf_exempt
