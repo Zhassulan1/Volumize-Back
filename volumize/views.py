@@ -3,7 +3,7 @@ import os
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from volumize.generate_mesh import check_input_image, gen, preprocess, generate
+from volumize.generate_mesh import check_input_image, preprocess, generate, text_to_image
 
 from volumize.s3 import upload_bytes, upload_file, generate_key
 
@@ -31,6 +31,30 @@ from volumize.s3 import upload_bytes, upload_file, generate_key
 def healthcheck(request):
     print("Health check")
     return JsonResponse({'status': 'Working'})
+
+
+def generate_image(request):
+    if request.method == 'POST' :
+        try:
+            data = json.loads(request.body)
+            print(f"Parsed JSON data: {data}")
+        except json.JSONDecodeError as e:
+            print(f"JSONDecodeError: {e}")
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        try:
+            prompt = data.get('prompt')
+            print(f"Prompt: {prompt}")
+        except Exception as e:
+            return JsonResponse({'error': 'Unexpected Fields'}, status=400)
+
+        file_path = text_to_image(prompt)
+        print("File path: ", file_path)
+        file_key = generate_key('user', "textgen", os.path.basename(file_path))
+        file_url = upload_file(file_path, file_key)
+        return JsonResponse({'file_url': file_url})
+    
+    return JsonResponse({'error': 'No file uploaded or invalid method'}, status=400)
+
 
 
 @csrf_exempt

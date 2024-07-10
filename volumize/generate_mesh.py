@@ -42,6 +42,22 @@ def generate(file_url):
 
 
 
+def text_to_image():
+  client = Client("stabilityai/stable-diffusion-3-medium")
+  result = client.predict(
+		prompt="Hello!!",
+		negative_prompt="Hello!!",
+		seed=0,
+		randomize_seed=True,
+		width=1024,
+		height=1024,
+		guidance_scale=5,
+		num_inference_steps=28,
+		api_name="/infer"
+  )
+  print("Result from generation: ", result)
+  return result[0]
+
 
 def gen(file_url):
     is_valid = not (check_input_image(file_url))
