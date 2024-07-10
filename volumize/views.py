@@ -32,7 +32,7 @@ def healthcheck(request):
     print("Health check")
     return JsonResponse({'status': 'Working'})
 
-
+@csrf_exempt
 def generate_image(request):
     if request.method == 'POST' :
         try:
@@ -54,6 +54,40 @@ def generate_image(request):
         return JsonResponse({'file_url': file_url})
     
     return JsonResponse({'error': 'No file uploaded or invalid method'}, status=400)
+
+
+
+
+@csrf_exempt
+def process_url(request):
+    if request.method == 'POST' :
+        try:
+            data = json.loads(request.body)
+            print(f"Parsed JSON data: {data}")
+        except json.JSONDecodeError as e:
+            print(f"JSONDecodeError: {e}")
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        try:
+            image_url = data.get('image_url')
+            print(f"Prompt: {image_url}")
+        except Exception as e:
+            return JsonResponse({'error': 'Unexpected Fields'}, status=400)
+
+        if check_input_image(image_url) == ():
+            print("Invalid image")
+            return JsonResponse({'error': 'Invalid image'}, status=400)
+
+        processed_path = preprocess(image_url, foreground_ratio=0.5)
+
+        if processed_path:
+            processed_image_key = generate_key('user', "processed", os.path.basename(processed_path))
+            processed_image_url = upload_file(processed_path, processed_image_key)
+
+            return JsonResponse({'image_url': processed_image_url})
+
+    
+    return JsonResponse({'error': 'No file uploaded or invalid method'}, status=400)
+
 
 
 
