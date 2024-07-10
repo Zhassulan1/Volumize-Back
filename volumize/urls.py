@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from volumize.views import healthcheck, process, make_3d
+from volumize.views import healthcheck, process, make_3d, generate_image
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('generate_image', generate_image),
     path('healthcheck/', healthcheck),
     path('process', process),
     path('make_3d', make_3d),
