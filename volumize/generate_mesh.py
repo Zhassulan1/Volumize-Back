@@ -42,11 +42,10 @@ def generate(file_url):
 
 
 
-def text_to_image():
+def text_to_image(prompt: str):
   client = Client("stabilityai/stable-diffusion-3-medium")
   result = client.predict(
-		prompt="Hello!!",
-		negative_prompt="Hello!!",
+		prompt=prompt,
 		seed=0,
 		randomize_seed=True,
 		width=1024,
