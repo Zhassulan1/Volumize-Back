@@ -44,9 +44,12 @@ def generate(file_url):
 
 def text_to_image(prompt: str):
   client = Client("stabilityai/stable-diffusion-3-medium")
+  print("Prompt: ", prompt)
+  print("Type of prompt: ", type(prompt))
   result = client.predict(
 		prompt=prompt,
 		seed=0,
+    negative_prompt="",
 		randomize_seed=True,
 		width=1024,
 		height=1024,
