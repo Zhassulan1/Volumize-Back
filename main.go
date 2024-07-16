@@ -8,7 +8,7 @@ import (
 
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Golang rules bithes!"))
+	w.Write([]byte("Golang rules bitches!"))
 }
 
 func main() {
