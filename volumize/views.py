@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from volumize.generate_mesh import check_input_image, preprocess, generate, text_to_image
-
+import requests as r
 from volumize.s3 import upload_bytes, upload_file, generate_key
 
 
@@ -30,7 +30,9 @@ from volumize.s3 import upload_bytes, upload_file, generate_key
 @csrf_exempt
 def healthcheck(request):
     print("Health check")
-    return JsonResponse({'status': 'Working'})
+    res = r.get("http://localhost:6969/healthcheck")
+    print(res.content)
+    return JsonResponse({'status': res.content.decode('ascii')})
 
 @csrf_exempt
 def generate_image(request):
