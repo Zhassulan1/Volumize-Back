@@ -36,7 +36,7 @@ if DEBUG == True:
     print(SECRET_KEY)
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = [os.environ.get("HOST_IP")]
+    ALLOWED_HOSTS = ['*']
 
 
 # Application definition
