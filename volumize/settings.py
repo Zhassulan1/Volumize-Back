@@ -119,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    '*'
 ]
 
 
