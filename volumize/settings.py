@@ -90,6 +90,9 @@ WSGI_APPLICATION = 'volumize.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+FILE_UPLOAD_MAX_MEMORY_SIZE = 20*1024*1024
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20*1024*1024
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -118,9 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 
-CORS_ALLOWED_ORIGINS = [
-    '*'
-]
+CORS_ALLOWED_ORIGINS = []
 
 
 CORS_ALLOW_ALL_ORIGINS = True

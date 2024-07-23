@@ -69,6 +69,8 @@ def process_url(request):
         except json.JSONDecodeError as e:
             print(f"JSONDecodeError: {e}")
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': 'Unexpected Fields'}, status=400)
         try:
             image_url = data.get('image_url')
             print(f"Prompt: {image_url}")
