@@ -2,16 +2,17 @@ import gradio_client
 from gradio_client import Client
 from os import path 
 
-client = Client("TencentARC/InstantMesh")
 def check_input_image(file_url):
+    client = Client("TencentARC/InstantMesh")
     result = client.predict(
         gradio_client.file(file_url),
-		api_name="/check_input_image"
+        api_name="/check_input_image"
     )
     print("Image check: ", result)
 
 
 def preprocess(file_url, foreground_ratio):
+    client = Client("TencentARC/InstantMesh")
     result = client.predict(
 		gradio_client.file(file_url),
 		True,	# bool  in 'Remove Background' Checkbox component
@@ -23,6 +24,7 @@ def preprocess(file_url, foreground_ratio):
 
 
 def generate(file_url):
+  client = Client("TencentARC/InstantMesh")
   result = client.predict(
     gradio_client.file(file_url),
     sample_steps=75,
@@ -42,11 +44,11 @@ def generate(file_url):
 
 def text_to_image(prompt: str):
   print("Prompt: ", prompt)
-  print("Type of prompt: ", type(prompt))
+  client = Client("stabilityai/stable-diffusion-3-medium")
   result = client.predict(
 		prompt=prompt,
 		seed=0,
-    negative_prompt="",
+    negative_prompt="cropped, lowres, text, error, cropped, worst quality, low quality, jpeg artifacts, signature, watermark, username, blurry",
 		randomize_seed=True,
 		width=1024,
 		height=1024,
