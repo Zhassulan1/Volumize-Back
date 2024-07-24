@@ -5,28 +5,28 @@ from os import path
 def check_input_image(file_url):
     client = Client("TencentARC/InstantMesh")
     result = client.predict(
-        gradio_client.file(file_url),
+        gradio_client.handle_file(file_url),
         api_name="/check_input_image"
     )
     print("Image check: ", result)
 
 
 def preprocess(file_url, foreground_ratio):
-    client = Client("TencentARC/InstantMesh")
-    result = client.predict(
-		gradio_client.file(file_url),
+  client = Client("TencentARC/InstantMesh")
+  result = client.predict(
+		gradio_client.handle_file(file_url),
 		True,	# bool  in 'Remove Background' Checkbox component
 		foreground_ratio,	# float (numeric value between 0.5 and 1.0) in 'Foreground Ratio' Slider component
 		api_name="/preprocess"
-    )
-    print("Preprocess: ", result)
-    return result
+  )
+  print("Preprocess: ", result)
+  return result
 
 
 def generate(file_url):
   client = Client("TencentARC/InstantMesh")
   result = client.predict(
-    gradio_client.file(file_url),
+    gradio_client.handle_file(file_url),
     sample_steps=75,
     sample_seed=42,
     api_name="/generate_mvs"
