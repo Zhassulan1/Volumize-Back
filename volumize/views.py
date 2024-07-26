@@ -34,6 +34,8 @@ def healthcheck(request):
     print(res.content)
     return JsonResponse({'status': res.content.decode('ascii')})
 
+
+
 @csrf_exempt
 def generate_image(request):
     if request.method == 'POST' :
@@ -98,24 +100,30 @@ def process_url(request):
 @csrf_exempt
 def process(request):
     if request.method == 'POST' and request.FILES['image']:
-        image = request.FILES['image']
-        image_key = generate_key('user', "original", image.name)
-        image_url = upload_bytes(image, image_key)
+        try:
+            image = request.FILES['image']
+            image_key = generate_key('user', "original", image.name)
+            image_url = upload_bytes(image, image_key)
 
-        if check_input_image(image_url) == ():
-            print("Invalid image")
-            return JsonResponse({'error': 'Invalid image'}, status=400)
+            if check_input_image(image_url) == ():
+                print("Invalid image")
+                return JsonResponse({'error': 'Invalid image'}, status=400)
 
-        processed_path = preprocess(image_url, foreground_ratio=0.5)
+            processed_path = preprocess(image_url, foreground_ratio=0.5)
 
-        if processed_path:
-            processed_image_key = generate_key('user', "processed", os.path.basename(processed_path))
-            processed_image_url = upload_file(processed_path, processed_image_key)
+            if processed_path:
+                processed_image_key = generate_key('user', "processed", os.path.basename(processed_path))
+                processed_image_url = upload_file(processed_path, processed_image_key)
 
-            return JsonResponse({'image_url': processed_image_url})
+                return JsonResponse({'image_url': processed_image_url})
+                
+
+            return JsonResponse({'error': 'No file uploaded'}, status=400)
+
+        except Exception as e:
+            print(f"Error: {e}")
+            return JsonResponse({'error': 'Internal Server Err: 500'}, status=500)
             
-
-        return JsonResponse({'error': 'No file uploaded'}, status=400)
     return JsonResponse({'error': 'No file uploaded'}, status=400)
 
 
