@@ -28,7 +28,7 @@ from volumize.s3 import upload_bytes, upload_file, generate_key
 
 @csrf_exempt
 def healthcheck(request):
-    return JsonResponse({'status': 'OK'})
+    return JsonResponse({'status': 'Ok'})
 
 
 
@@ -125,9 +125,6 @@ def process(request):
 
 @csrf_exempt
 def make_3d(request):
-    print(f"Request method: {request.method}")
-    print(f"Request body: {request.body}")
-
     try:
         data = json.loads(request.body)
         print(f"Parsed JSON data: {data}")
@@ -135,16 +132,22 @@ def make_3d(request):
         print(f"JSONDecodeError: {e}")
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
-    image_url = data.get('image_url')
-    print(f"Image URL: {image_url}")
+    try:
+        image_url = data.get('image_url')
+        print(f"Image URL: {image_url}")
+    except Exception as e:
+        return JsonResponse({'error': 'Unexpected Fields'}, status=400)
 
     if request.method == 'POST' and image_url:
-        model_path = generate(image_url)
-        if model_path:
-            model_key = generate_key('user', "obj", os.path.basename(model_path))
-            model_url = upload_file(model_path, model_key)
-            return JsonResponse({'model_url': model_url})
-        else:
-            return JsonResponse({'error': 'Model generation failed'}, status=500)
-
+        try:
+            model_path = generate(image_url)
+            if model_path:
+                model_key = generate_key('user', "obj", os.path.basename(model_path))
+                model_url = upload_file(model_path, model_key)
+                return JsonResponse({'model_url': model_url})
+            else:
+                return JsonResponse({'error': 'Model generation failed'}, status=500)
+        except Exception as e:
+            return JsonResponse({'error': 'Internal Server Err: 500', 'error': str(e)})
+        
     return JsonResponse({'error': 'No file uploaded or invalid method'}, status=400)
