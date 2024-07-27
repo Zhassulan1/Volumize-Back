@@ -28,7 +28,7 @@ from volumize.s3 import upload_bytes, upload_file, generate_key
 
 @csrf_exempt
 def healthcheck(request):
-    return JsonResponse({'status': 'Ok'})
+    return JsonResponse({'status': 'OK'})
 
 
 
@@ -148,6 +148,6 @@ def make_3d(request):
             else:
                 return JsonResponse({'error': 'Model generation failed'}, status=500)
         except Exception as e:
-            return JsonResponse({'error': 'Internal Server Err: 500', 'error': str(e)})
+            return JsonResponse({'error': 'Internal Server Err: 500', 'error': e}, status=201)
         
     return JsonResponse({'error': 'No file uploaded or invalid method'}, status=400)
