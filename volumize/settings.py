@@ -121,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = ["https://volumize-ai.vercel.app"]
 
 
 CORS_ALLOW_ALL_ORIGINS = True
