@@ -28,7 +28,7 @@ from volumize.s3 import upload_bytes, upload_file, generate_key
 
 @csrf_exempt
 def healthcheck(request):
-    return JsonResponse({'status': 'OK'})
+    return JsonResponse({'status': 'Ok'})
 
 
 
