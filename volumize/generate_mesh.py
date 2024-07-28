@@ -2,8 +2,9 @@ import gradio_client
 from gradio_client import Client
 from os import path 
 
+
+client = Client("TencentARC/InstantMesh")
 def check_input_image(file_url):
-    client = Client("TencentARC/InstantMesh")
     result = client.predict(
         gradio_client.handle_file(file_url),
         api_name="/check_input_image"
@@ -12,7 +13,6 @@ def check_input_image(file_url):
 
 
 def preprocess(file_url, foreground_ratio):
-  client = Client("TencentARC/InstantMesh")
   result = client.predict(
 		gradio_client.handle_file(file_url),
 		True,	# bool  in 'Remove Background' Checkbox component
@@ -24,7 +24,6 @@ def preprocess(file_url, foreground_ratio):
 
 
 def generate(file_url):
-  client = Client("TencentARC/InstantMesh")
   result = client.predict(
     gradio_client.handle_file(file_url),
     sample_steps=75,
