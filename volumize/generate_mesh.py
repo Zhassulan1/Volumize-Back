@@ -1,5 +1,6 @@
 from django.conf import settings
-from os import path 
+from os import path
+from random import randint
 
 from gradio_client import Client
 import gradio_client
@@ -7,8 +8,17 @@ import gradio_client
 MESH_SPACE = settings.HUGGINGFACE_SPACE_NAME
 TOKEN = settings.HUGGINGFACE_TOKEN
 
+
+def init_client(is_hard=False):
+  if not is_hard:
+    return Client("TencentARC/InstantMesh")
+  space_name = MESH_SPACE + str(randint(0, 9))
+  client = Client(space_name, hf_token=TOKEN)
+  return client
+
+
 def check_input_image(file_url):
-  client = Client(MESH_SPACE, hf_token=TOKEN)
+  client = init_client()
   result = client.predict(
       gradio_client.handle_file(file_url),
       api_name="/check_input_image"
@@ -17,7 +27,7 @@ def check_input_image(file_url):
 
 
 def preprocess(file_url, foreground_ratio):
-  client = Client(MESH_SPACE, hf_token=TOKEN)
+  client = init_client()
   result = client.predict(
 		gradio_client.handle_file(file_url),
 		True,	# bool  in 'Remove Background' Checkbox component
@@ -29,7 +39,7 @@ def preprocess(file_url, foreground_ratio):
 
 
 def generate(file_url):
-  client = Client(MESH_SPACE, hf_token=TOKEN)
+  client = init_client(is_hard=True)
   result = client.predict(
     gradio_client.handle_file(file_url),
     sample_steps=75,
