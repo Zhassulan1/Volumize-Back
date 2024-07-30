@@ -5,9 +5,10 @@ from gradio_client import Client
 import gradio_client
 
 MESH_SPACE = settings.HUGGINGFACE_SPACE_NAME
+TOKEN = settings.HUGGINGFACE_TOKEN
 
 def check_input_image(file_url):
-  client = Client(MESH_SPACE)
+  client = Client(MESH_SPACE, hf_token=TOKEN)
   result = client.predict(
       gradio_client.handle_file(file_url),
       api_name="/check_input_image"
@@ -16,7 +17,7 @@ def check_input_image(file_url):
 
 
 def preprocess(file_url, foreground_ratio):
-  client = Client(MESH_SPACE)
+  client = Client(MESH_SPACE, hf_token=TOKEN)
   result = client.predict(
 		gradio_client.handle_file(file_url),
 		True,	# bool  in 'Remove Background' Checkbox component
@@ -28,7 +29,7 @@ def preprocess(file_url, foreground_ratio):
 
 
 def generate(file_url):
-  client = Client(MESH_SPACE)
+  client = Client(MESH_SPACE, hf_token=TOKEN)
   result = client.predict(
     gradio_client.handle_file(file_url),
     sample_steps=75,
