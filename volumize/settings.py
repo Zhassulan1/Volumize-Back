@@ -31,11 +31,11 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get("DEBUG_MODE") == "True")
 
+ALLOWED_HOSTS = ['volumizeback.gestionempresarial.cl', '16.170.9.9']
+
 if DEBUG == True:
     print("DEBUG MODE IS ON")
     print(SECRET_KEY)
-    ALLOWED_HOSTS = ['*']
-else:
     ALLOWED_HOSTS = ['*']
 
 
@@ -90,8 +90,8 @@ WSGI_APPLICATION = 'volumize.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-FILE_UPLOAD_MAX_MEMORY_SIZE = 20*1024*1024
-DATA_UPLOAD_MAX_MEMORY_SIZE = 20*1024*1024
+FILE_UPLOAD_MAX_MEMORY_SIZE = 16*1024*1024
+DATA_UPLOAD_MAX_MEMORY_SIZE = 16*1024*1024
 
 DATABASES = {
     'default': {
@@ -120,17 +120,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOWED_ORIGINS = ["https://volumize-ai.vercel.app"]
+CORS_ALLOWED_ORIGINS = ["https://volumize-ai.vercel.app", "https://volumize.me"]
+if DEBUG:
+    CORS_ALLOWED_ORIGINS.append("http://localhost:3000")
 
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    'https://*',
-]
-
-
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
