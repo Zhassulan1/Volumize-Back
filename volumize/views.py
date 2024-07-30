@@ -28,8 +28,7 @@ from volumize.s3 import upload_bytes, upload_file, generate_key
 
 @csrf_exempt
 def healthcheck(request):
-    return JsonResponse({'status': 'Ok'})
-
+    return JsonResponse({'status': 'OЛ'})
 
 
 @csrf_exempt
@@ -37,15 +36,11 @@ def generate_image(request):
     if request.method == 'POST' :
         try:
             data = json.loads(request.body)
-            print(f"Parsed JSON data: {data}")
-        except json.JSONDecodeError as e:
+            prompt = data.get('prompt')
+            print(f"JSON data: {data}")
+        except Exception as e:
             print(f"JSONDecodeError: {e}")
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
-        try:
-            prompt = data.get('prompt')
-            print(f"Prompt: {prompt}")
-        except Exception as e:
-            return JsonResponse({'error': 'Unexpected Fields'}, status=400)
 
         file_path = text_to_image(prompt)
         print("File path: ", file_path)
@@ -56,41 +51,27 @@ def generate_image(request):
     return JsonResponse({'error': 'No file uploaded or invalid method'}, status=400)
 
 
-
-
 @csrf_exempt
 def process_url(request):
     if request.method == 'POST' :
         try:
             data = json.loads(request.body)
-            print(f"Parsed JSON data: {data}")
-        except json.JSONDecodeError as e:
+            image_url = data.get('image_url')
+            print(f"JSON data: {data}")
+        except Exception as e:
             print(f"JSONDecodeError: {e}")
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
-        except Exception as e:
-            return JsonResponse({'error': 'Unexpected Fields'}, status=400)
-        try:
-            image_url = data.get('image_url')
-            print(f"Prompt: {image_url}")
-        except Exception as e:
-            return JsonResponse({'error': 'Unexpected Fields'}, status=400)
 
-        if check_input_image(image_url) == ():
+        if not check_input_image(image_url) :
             print("Invalid image")
-            return JsonResponse({'error': 'Invalid image'}, status=400)
+            return JsonResponse({'error': 'Invalid input'}, status=400)
 
         processed_path = preprocess(image_url, foreground_ratio=0.5)
-
         if processed_path:
             processed_image_key = generate_key('user', "processed", os.path.basename(processed_path))
             processed_image_url = upload_file(processed_path, processed_image_key)
-
             return JsonResponse({'image_url': processed_image_url})
-
-    
-    return JsonResponse({'error': 'No file uploaded or invalid method'}, status=400)
-
-
+    return JsonResponse({'error': 'Wrong method'}, status=400)
 
 
 @csrf_exempt
@@ -101,25 +82,20 @@ def process(request):
             image_key = generate_key('user', "original", image.name)
             image_url = upload_bytes(image, image_key)
 
-            if check_input_image(image_url) == ():
+            if not check_input_image(image_url) :
                 print("Invalid image")
-                return JsonResponse({'error': 'Invalid image'}, status=400)
+                return JsonResponse({'error': 'Invalid input'}, status=400)
 
             processed_path = preprocess(image_url, foreground_ratio=0.5)
-
             if processed_path:
                 processed_image_key = generate_key('user', "processed", os.path.basename(processed_path))
                 processed_image_url = upload_file(processed_path, processed_image_key)
-
                 return JsonResponse({'image_url': processed_image_url})
-                
-
             return JsonResponse({'error': 'No file uploaded'}, status=400)
-
+        
         except Exception as e:
             print(f"Error: {e}")
             return JsonResponse({'error': 'Internal Server Err: 500', 'error': str(e)})
-            
     return JsonResponse({'error': 'No file uploaded'}, status=400)
 
 
@@ -127,16 +103,11 @@ def process(request):
 def make_3d(request):
     try:
         data = json.loads(request.body)
-        print(f"Parsed JSON data: {data}")
-    except json.JSONDecodeError as e:
+        image_url = data.get('image_url')
+        print(f"JSON data: {data}")
+    except Exception as e:
         print(f"JSONDecodeError: {e}")
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
-    try:
-        image_url = data.get('image_url')
-        print(f"Image URL: {image_url}")
-    except Exception as e:
-        return JsonResponse({'error': 'Unexpected Fields'}, status=400)
 
     if request.method == 'POST' and image_url:
         try:
