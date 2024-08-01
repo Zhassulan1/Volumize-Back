@@ -67,18 +67,23 @@ def generate(file_url):
 
 def text_to_image(prompt: str):
 	print("Prompt: ", prompt)
-	client = Client("stabilityai/stable-diffusion-3-medium")
-	result = client.predict(
-		prompt=prompt,
-		seed=0,
-		negative_prompt="cropped, lowres, text, error, cropped, worst quality, low quality, jpeg artifacts, signature, watermark, username, blurry",
-		randomize_seed=True,
-		width=1024,
-		height=1024,
-		guidance_scale=5,
-		num_inference_steps=28,
-		api_name="/infer"
-	)
+	try:
+		client = Client("stabilityai/stable-diffusion-3-medium")
+		result = client.predict(
+			prompt=prompt,
+			seed=0,
+			negative_prompt="cropped, lowres, text, error, cropped, worst quality, low quality, jpeg artifacts, signature, watermark, username, blurry",
+			randomize_seed=True,
+			width=1024,
+			height=1024,
+			guidance_scale=5,
+			num_inference_steps=28,
+			api_name="/infer"
+		)
+	except Exception as err:
+		print("Text: ", err)
+		raise err
+	
 	print("Generated image: ", result)
 	return result[0]
 
