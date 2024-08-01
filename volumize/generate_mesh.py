@@ -6,6 +6,7 @@ from gradio_client import Client
 import gradio_client
 
 MESH_SPACE = settings.HUGGINGFACE_SPACE_NAME
+SD3M_SPACE = settings.SD3M_SPACE_NAME
 TOKEN = settings.HUGGINGFACE_TOKEN
 
 
@@ -68,7 +69,7 @@ def generate(file_url):
 def text_to_image(prompt: str):
 	print("Prompt: ", prompt)
 	try:
-		client = Client("stabilityai/stable-diffusion-3-medium")
+		client = Client(SD3M_SPACE)
 		result = client.predict(
 			prompt=prompt,
 			seed=0,
