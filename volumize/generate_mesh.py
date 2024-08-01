@@ -69,7 +69,7 @@ def generate(file_url):
 def text_to_image(prompt: str):
 	print("Prompt: ", prompt)
 	try:
-		client = Client(SD3M_SPACE)
+		client = Client(SD3M_SPACE, hf_token=TOKEN)
 		result = client.predict(
 			prompt=prompt,
 			seed=0,
