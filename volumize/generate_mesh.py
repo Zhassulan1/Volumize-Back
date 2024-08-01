@@ -12,7 +12,7 @@ TOKEN = settings.HUGGINGFACE_TOKEN
 def init_client(is_hard=False):
 	if not is_hard:
 		return Client("TencentARC/InstantMesh")
-	space_name = MESH_SPACE + str(randint(0, 9))
+	space_name = MESH_SPACE + str(randint(0, 4))
 	print("Space name: ", space_name)
 	client = Client(space_name, hf_token=TOKEN)
 	return client
