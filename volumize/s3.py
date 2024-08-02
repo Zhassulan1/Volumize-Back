@@ -54,7 +54,7 @@ def upload_file(file_name, key):
             key,
             ExtraArgs={'ACL': 'public-read'},
         )
-        print("Response: ", response)
+        print("File in s3: ", response)
     except Exception as e:
         print(e)
         return

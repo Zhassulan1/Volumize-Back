@@ -49,19 +49,25 @@ def preprocess(file_url, foreground_ratio):
 
 
 def generate(file_url):
-	client = init_client(is_hard=True)
-	result = client.predict(
-		gradio_client.handle_file(file_url),
-		sample_steps=75,
-		sample_seed=42,
-		api_name="/generate_mvs"
-	)
-	print("MVS: ", result)
-	
-	result = client.predict(
-		api_name="/make3d"
-	)
-	print("3D: ", path.normpath(result[0]), '\n', path.normpath(result[1]))
+	print("Making 3D model:")
+
+	try:
+		client = init_client(is_hard=True)
+		result = client.predict(
+			gradio_client.handle_file(file_url),
+			sample_steps=75,
+			sample_seed=42,
+			api_name="/generate_mvs"
+		)
+		print("MVS: ", result)
+		
+		result = client.predict(
+			api_name="/make3d"
+		)
+		print("3D: ", path.normpath(result[0]), '\n', path.normpath(result[1]))
+	except Exception as err:
+		print("\n\n!!!!Exception 3D: ", err, "\n\n")
+		raise err
 	return path.normpath(path.normpath(result[0]))
 
 
