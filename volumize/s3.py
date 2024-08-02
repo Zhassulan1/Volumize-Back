@@ -47,6 +47,7 @@ def upload_file(file_name, key):
     )
 
     try:
+        print("Uploading file to S3")
         response = s3_client.upload_file(
             file_name,
             bucket,
